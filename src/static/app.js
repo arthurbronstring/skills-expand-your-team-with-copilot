@@ -1,4 +1,15 @@
 document.addEventListener("DOMContentLoaded", () => {
+  // HTML escaping function to prevent XSS
+  function escapeHtml(unsafe) {
+    if (typeof unsafe !== 'string') return '';
+    return unsafe
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#039;");
+  }
+
   // DOM elements
   const activitiesList = document.getElementById("activities-list");
   const messageDiv = document.getElementById("message");
@@ -523,20 +534,20 @@ document.addEventListener("DOMContentLoaded", () => {
     const shareButtonsHtml = `
       <div class="share-buttons">
         <span class="share-label">Share:</span>
-        <button class="share-button share-facebook tooltip" data-activity="${name}" data-description="${details.description.replace(/"/g, '&quot;')}" data-schedule="${formattedSchedule.replace(/"/g, '&quot;')}" title="Share on Facebook">
-          <span class="share-icon">📘</span>
+        <button class="share-button share-facebook tooltip" data-activity="${escapeHtml(name)}" data-description="${escapeHtml(details.description)}" data-schedule="${escapeHtml(formattedSchedule)}" title="Share on Facebook" aria-label="Share ${escapeHtml(name)} on Facebook">
+          <span class="share-icon" aria-hidden="true">📘</span>
           <span class="tooltip-text">Share on Facebook</span>
         </button>
-        <button class="share-button share-twitter tooltip" data-activity="${name}" data-description="${details.description.replace(/"/g, '&quot;')}" data-schedule="${formattedSchedule.replace(/"/g, '&quot;')}" title="Share on Twitter">
-          <span class="share-icon">🐦</span>
+        <button class="share-button share-twitter tooltip" data-activity="${escapeHtml(name)}" data-description="${escapeHtml(details.description)}" data-schedule="${escapeHtml(formattedSchedule)}" title="Share on Twitter" aria-label="Share ${escapeHtml(name)} on Twitter">
+          <span class="share-icon" aria-hidden="true">🐦</span>
           <span class="tooltip-text">Share on Twitter</span>
         </button>
-        <button class="share-button share-email tooltip" data-activity="${name}" data-description="${details.description.replace(/"/g, '&quot;')}" data-schedule="${formattedSchedule.replace(/"/g, '&quot;')}" title="Share via Email">
-          <span class="share-icon">✉️</span>
+        <button class="share-button share-email tooltip" data-activity="${escapeHtml(name)}" data-description="${escapeHtml(details.description)}" data-schedule="${escapeHtml(formattedSchedule)}" title="Share via Email" aria-label="Share ${escapeHtml(name)} via Email">
+          <span class="share-icon" aria-hidden="true">✉️</span>
           <span class="tooltip-text">Share via Email</span>
         </button>
-        <button class="share-button share-link tooltip" data-activity="${name}" title="Copy Link">
-          <span class="share-icon">🔗</span>
+        <button class="share-button share-link tooltip" data-activity="${escapeHtml(name)}" title="Copy Link" aria-label="Copy link for ${escapeHtml(name)} to clipboard">
+          <span class="share-icon" aria-hidden="true">🔗</span>
           <span class="tooltip-text">Copy link to clipboard</span>
         </button>
       </div>
